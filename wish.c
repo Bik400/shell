@@ -10,6 +10,9 @@ the process, and then waits for more input
 
 -- to implement cd, use chdir()
 
+1. break up the user input into tokens
+2. check which command to run and the path 
+
 */
 
 #include <stdio.h>
@@ -26,16 +29,42 @@ int main(int argc, char* argv[]) {
         printf("wish> ");
         // get user input
         chars_read = getline(&buffer,&buffer_size,stdin);
+        char* found;
 
-        printf("user input: %s", buffer);
-        // exit the shell when user inputs exit or ctrl+d
-        if (strcmp(buffer,"exit\n") == 0 || chars_read == -1) {
-            printf("Exiting shell...\n");
-            exit(0);
-        }
-        if (strcmp(buffer, "cd") == 0) {
+        // while ((found = strsep(&buffer, " ")) != NULL) {
+        //     if (strcmp(found, "exit") == 0) {
+        //         printf("Exiting shell...\n");
+        //         exit(0);
+        //     } else {
+        //         printf("Found this word: %s\n", found);
+        //     }
+        // }
 
+        // split the input string 
+        char* token;
+        token = strtok(buffer, " ");
+        int i = 0;
+        while (token != NULL) {
+            argv[i] = token;
+            token = strtok(NULL, " ");
+            i++;
         }
+        argv[i] = NULL;
+        
+        
+        printf("Array index 0: %s", argv[0]);
+        printf("Array index 1: %s", argv[1]);
+
+
+        // printf("user input: %s", buffer);
+        // // exit the shell when user inputs exit or ctrl+d
+        // if (strcmp(buffer,"exit\n") == 0 || chars_read == -1) {
+        //     printf("Exiting shell...\n");
+        //     exit(0);
+        // }
+        // if (strcmp(buffer, "cd") == 0) {
+
+        // }
     }
 
     return 0;
