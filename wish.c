@@ -13,6 +13,15 @@ the process, and then waits for more input
 1. break up the user input into tokens
 2. check which command to run and the path 
 
+to-do:
+- if there is an argument when there the file is run then run in batch mode 
+  else run in interactive mode
+- figure out what command is being called
+- if it's a built-in function then execute it without a child process
+- create a child process
+- execute the command that is entered
+- wait for the command to finish
+
 */
 
 #include <stdio.h>
@@ -29,42 +38,47 @@ int main(int argc, char* argv[]) {
         printf("wish> ");
         // get user input
         chars_read = getline(&buffer,&buffer_size,stdin);
-        char* found;
 
-        // while ((found = strsep(&buffer, " ")) != NULL) {
-        //     if (strcmp(found, "exit") == 0) {
-        //         printf("Exiting shell...\n");
-        //         exit(0);
-        //     } else {
-        //         printf("Found this word: %s\n", found);
-        //     }
-        // }
-
-        // split the input string 
+        //split the input string 
         char* token;
         token = strtok(buffer, " ");
         int i = 0;
+        char* input[10];
+        // char* input = (char *) malloc(sizeof(char) * 10);
         while (token != NULL) {
-            argv[i] = token;
+            input[i] = token;
             token = strtok(NULL, " ");
             i++;
         }
-        argv[i] = NULL;
-        
-        
-        printf("Array index 0: %s", argv[0]);
-        printf("Array index 1: %s", argv[1]);
+
+        input[i] = NULL;
+
+        // int input_size = sizeof(input) / sizeof(input[0]);
+        // check if user inputted ctrl+d or EOF
+        if (chars_read == -1) {
+            printf("Exiting the shell...");
+            exit(0);
+        }
+
+        // check if the user inputted exit
+        // error-check: check if an argument was passed when using exit
+        if (strcmp(input[0], "exit\n") == 0) {
+            printf("Exiting the shell...");
+            exit(0);
+        }
+
+        // check if the user inputted cd
+        // if (strcmp(input[0], "cd") == 0 && )
 
 
-        // printf("user input: %s", buffer);
-        // // exit the shell when user inputs exit or ctrl+d
-        // if (strcmp(buffer,"exit\n") == 0 || chars_read == -1) {
-        //     printf("Exiting shell...\n");
-        //     exit(0);
-        // }
-        // if (strcmp(buffer, "cd") == 0) {
+        // check if the user inputted path
 
-        // }
+        // loop through the user input
+        int j = 0;
+        while (input[j] != NULL) {
+            printf("Array index %d: %s\n", j, input[j]);    
+            j++;
+        }
     }
 
     return 0;
